@@ -1,0 +1,137 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Navbar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rift-void: #0b0710;
+    --rift-surface: #16101d;
+    --rift-border: #2f2438;
+    --rift-text-primary: #f2e9dc;
+    --rift-text-secondary: #b3a6b8;
+    --rift-text-tertiary: #7c6f83;
+    --rift-ember-solid: #b23430;
+    --rift-ember-hover: #c93f37;
+    --radius-md: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--rift-void);
+    color: var(--rift-text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .demo-pad { padding: 24px 40px; }
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin: 0 0 4px;
+  }
+  .sub { color: var(--rift-text-secondary); font-size: 14px; margin: 0 0 20px; }
+  .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--rift-text-tertiary); margin: 24px 0 8px; }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 32px;
+    border-bottom: 1px solid var(--rift-border);
+    background: rgba(11,7,16,0.9);
+  }
+  .brand {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    letter-spacing: 0.06em;
+    color: var(--rift-text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand .mark {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--rift-ember-solid), #7c3aed);
+  }
+  .links { display: flex; align-items: center; gap: 28px; }
+  .links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--rift-text-secondary);
+    text-decoration: none;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+  }
+  .links a:hover { color: var(--rift-text-primary); }
+  .links a.active { color: var(--rift-text-primary); border-bottom-color: var(--rift-ember-solid); }
+
+  .auth { display: flex; align-items: center; gap: 14px; }
+  .signin-btn {
+    font-size: 14px; font-weight: 600;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: var(--rift-ember-solid);
+    color: #fff;
+    cursor: pointer;
+  }
+  .signin-btn:hover { background: var(--rift-ember-hover); }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--rift-surface);
+    border: 1px solid var(--rift-border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--rift-text-primary);
+    cursor: pointer;
+  }
+
+  .hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 6px; }
+  .hamburger span { width: 20px; height: 2px; background: var(--rift-text-primary); display: block; }
+
+  @media (max-width: 720px) {
+    .links { display: none; }
+    .hamburger { display: flex; }
+  }
+</style>
+</head>
+<body>
+  <div class="demo-pad">
+    <h1>Navbar</h1>
+    <p class="sub">App shell header. Collapses to a hamburger below 720px (nav links stay reachable via menu, never hidden entirely).</p>
+  </div>
+
+  <div class="label" style="padding-left:40px;">Logged out</div>
+  <nav>
+    <a class="brand" href="#"><span class="mark"></span>RiftDweller Cloud</a>
+    <div class="links">
+      <a href="#" class="active">Catalog</a>
+      <a href="#">Deck Builder</a>
+    </div>
+    <div class="auth">
+      <button class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <button class="signin-btn">Sign in</button>
+    </div>
+  </nav>
+
+  <div class="label" style="padding-left:40px;">Logged in</div>
+  <nav>
+    <a class="brand" href="#"><span class="mark"></span>RiftDweller Cloud</a>
+    <div class="links">
+      <a href="#">Catalog</a>
+      <a href="#" class="active">Deck Builder</a>
+    </div>
+    <div class="auth">
+      <button class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <div class="avatar">DH</div>
+    </div>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>CardTile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=Geist+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rift-void: #0b0710;
+    --rift-surface: #16101d;
+    --rift-surface-raised: #1f1729;
+    --rift-border: #2f2438;
+    --rift-border-strong: #4a3a58;
+    --rift-text-primary: #f2e9dc;
+    --rift-text-secondary: #b3a6b8;
+    --rift-text-tertiary: #7c6f83;
+    --rift-ember-solid: #b23430;
+    --rarity-rare-text: #7dd3fc;     --rarity-rare-bg: rgba(56,189,248,0.12);      --rarity-rare-border: rgba(56,189,248,0.35);
+    --rarity-epic-text: #c4b5fd;     --rarity-epic-bg: rgba(167,139,250,0.12);     --rarity-epic-border: rgba(167,139,250,0.35);
+    --rarity-legendary-text: #fbbf24; --rarity-legendary-bg: rgba(245,158,11,0.14); --rarity-legendary-border: rgba(245,158,11,0.4);
+    --rarity-common-text: #b6bec9;   --rarity-common-bg: rgba(156,163,175,0.12);   --rarity-common-border: rgba(156,163,175,0.35);
+    --glow-ember: 0 0 0 1px rgba(209,69,61,0.4), 0 0 24px rgba(209,69,61,0.25);
+    --glow-arcane: 0 0 0 1px rgba(139,92,246,0.4), 0 0 24px rgba(139,92,246,0.25);
+    --radius-lg: 16px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--rift-void);
+    color: var(--rift-text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 40px;
+  }
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin: 0 0 4px;
+  }
+  .sub { color: var(--rift-text-secondary); font-size: 14px; margin: 0 0 28px; }
+  .label { width: 100%; font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--rift-text-tertiary); margin: 24px 0 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 18px; }
+
+  .card {
+    width: 190px;
+    background: var(--rift-surface);
+    border: 1px solid var(--rift-border);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    cursor: pointer;
+  }
+  .card:hover { border-color: var(--rift-border-strong); transform: translateY(-2px); }
+  .card.owned { box-shadow: var(--glow-ember); border-color: transparent; }
+  .card.suggested { box-shadow: var(--glow-arcane); border-color: transparent; }
+  .card.disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 6px; }
+  .card-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+  }
+  .cost {
+    flex-shrink: 0;
+    font-family: 'Geist Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--rift-surface-raised);
+    border: 1px solid var(--rift-border-strong);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--rift-text-primary);
+  }
+
+  .art {
+    aspect-ratio: 5 / 4;
+    border-radius: var(--radius-sm);
+    background:
+      radial-gradient(circle at 30% 20%, rgba(178,52,48,0.25), transparent 55%),
+      radial-gradient(circle at 70% 80%, rgba(124,58,237,0.2), transparent 55%),
+      var(--rift-surface-raised);
+    border: 1px solid var(--rift-border);
+  }
+
+  .rarity {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid;
+    width: fit-content;
+  }
+  .rarity::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .r-common { color: var(--rarity-common-text); background: var(--rarity-common-bg); border-color: var(--rarity-common-border); }
+  .r-rare { color: var(--rarity-rare-text); background: var(--rarity-rare-bg); border-color: var(--rarity-rare-border); }
+  .r-epic { color: var(--rarity-epic-text); background: var(--rarity-epic-bg); border-color: var(--rarity-epic-border); }
+  .r-legendary { color: var(--rarity-legendary-text); background: var(--rarity-legendary-bg); border-color: var(--rarity-legendary-border); }
+
+  .flavor {
+    font-size: 11px;
+    color: var(--rift-text-secondary);
+    line-height: 1.4;
+    margin: 0;
+  }
+  .meta { display: flex; align-items: center; justify-content: space-between; }
+  .type { font-size: 11px; color: var(--rift-text-tertiary); }
+  .pt { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--rift-text-primary); }
+
+  .qty-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 2px;
+  }
+  .stepper { display: flex; align-items: center; gap: 6px; }
+  .stepper button {
+    width: 22px; height: 22px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--rift-border-strong);
+    background: var(--rift-surface-raised);
+    color: var(--rift-text-primary);
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+  }
+  .stepper span { font-family: 'Geist Mono', monospace; font-size: 12px; width: 14px; text-align: center; }
+</style>
+</head>
+<body>
+  <h1>CardTile</h1>
+  <p class="sub">The core catalog/deck-builder unit. Art is a CSS gradient placeholder (no image dependency). Owned = ember glow ring, Suggested (recommendations) = arcane glow ring.</p>
+
+  <div class="label">Catalog states</div>
+  <div class="row">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-name">Ashgrave Warden</span>
+        <span class="cost">4</span>
+      </div>
+      <div class="art"></div>
+      <span class="rarity r-rare">Rare</span>
+      <p class="flavor">"The grave does not release what it has claimed."</p>
+      <div class="meta">
+        <span class="type">Creature &middot; Undead</span>
+        <span class="pt">4/5</span>
+      </div>
+    </div>
+
+    <div class="card owned">
+      <div class="card-head">
+        <span class="card-name">Emberfall Wyrm</span>
+        <span class="cost">6</span>
+      </div>
+      <div class="art"></div>
+      <span class="rarity r-legendary">Legendary</span>
+      <p class="flavor">"It does not fly. The sky simply gets out of its way."</p>
+      <div class="meta">
+        <span class="type">Creature &middot; Dragon</span>
+        <span class="pt">7/6</span>
+      </div>
+    </div>
+
+    <div class="card suggested">
+      <div class="card-head">
+        <span class="card-name">Veil of Whispers</span>
+        <span class="cost">2</span>
+      </div>
+      <div class="art"></div>
+      <span class="rarity r-epic">Epic</span>
+      <p class="flavor">Synergizes with your Undead curve.</p>
+      <div class="meta">
+        <span class="type">Spell &middot; Rite</span>
+        <span class="pt">&mdash;</span>
+      </div>
+    </div>
+
+    <div class="card disabled">
+      <div class="card-head">
+        <span class="card-name">Hollow Acolyte</span>
+        <span class="cost">1</span>
+      </div>
+      <div class="art"></div>
+      <span class="rarity r-common">Common</span>
+      <p class="flavor">Max copies (4) already in this deck.</p>
+      <div class="meta">
+        <span class="type">Creature &middot; Cultist</span>
+        <span class="pt">1/1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="label">Deck builder row (with quantity stepper)</div>
+  <div class="row">
+    <div class="card" style="width:220px;">
+      <div class="card-head">
+        <span class="card-name">Ashgrave Warden</span>
+        <span class="cost">4</span>
+      </div>
+      <div class="qty-row">
+        <span class="type">Creature &middot; Undead</span>
+        <div class="stepper">
+          <button aria-label="Decrease quantity">&minus;</button>
+          <span>3</span>
+          <button aria-label="Increase quantity">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

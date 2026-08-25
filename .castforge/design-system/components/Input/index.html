@@ -1,0 +1,98 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Input</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rift-void: #0b0710;
+    --rift-surface: #16101d;
+    --rift-border: #2f2438;
+    --rift-border-strong: #4a3a58;
+    --rift-text-primary: #f2e9dc;
+    --rift-text-secondary: #b3a6b8;
+    --rift-text-tertiary: #7c6f83;
+    --rift-danger: #f87171;
+    --rift-arcane: #8b5cf6;
+    --glow-arcane: 0 0 0 1px rgba(139,92,246,0.4), 0 0 24px rgba(139,92,246,0.15);
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--rift-void);
+    color: var(--rift-text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 40px;
+  }
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin: 0 0 4px;
+  }
+  .sub { color: var(--rift-text-secondary); font-size: 14px; margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; max-width: 720px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--rift-text-tertiary); }
+  .field input {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--rift-text-primary);
+    background: var(--rift-surface);
+    border: 1px solid var(--rift-border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    min-height: 40px;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .field input::placeholder { color: var(--rift-text-tertiary); }
+  .field input:hover { border-color: var(--rift-border-strong); }
+  .field input:focus { border-color: var(--rift-arcane); box-shadow: var(--glow-arcane); }
+  .field input:disabled { opacity: 0.5; cursor: not-allowed; }
+  .field.invalid input { border-color: var(--rift-danger); }
+  .field.invalid input:focus { box-shadow: 0 0 0 1px rgba(248,113,113,0.5), 0 0 24px rgba(248,113,113,0.15); }
+  .helper { font-size: 12px; color: var(--rift-text-tertiary); }
+  .helper.error { color: var(--rift-danger); }
+
+  .search-wrap { position: relative; }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--rift-text-tertiary); }
+  .search-wrap input { padding-left: 34px; }
+</style>
+</head>
+<body>
+  <h1>Input</h1>
+  <p class="sub">Text fields for auth forms and the catalog search bar. Arcane glow on focus, danger border + helper text on validation error.</p>
+
+  <div class="grid">
+    <div class="field">
+      <label for="i1">Email</label>
+      <input id="i1" type="email" placeholder="you@example.com" />
+    </div>
+
+    <div class="field">
+      <label for="i2">Search the catalog</label>
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="i2" type="text" placeholder="Search by name, type, or rarity&hellip;" />
+      </div>
+    </div>
+
+    <div class="field invalid">
+      <label for="i3">Password</label>
+      <input id="i3" type="password" value="short" />
+      <span class="helper error">Password must be at least 8 characters.</span>
+    </div>
+
+    <div class="field">
+      <label for="i4">Deck name</label>
+      <input id="i4" type="text" disabled value="Ashen Vanguard" />
+      <span class="helper">Read-only while saving.</span>
+    </div>
+  </div>
+</body>
+</html>
