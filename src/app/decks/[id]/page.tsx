@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getOwnedDeck } from "@/lib/decks";
+import { getDeckRecommendations } from "@/lib/recommendations";
 import {
   deleteDeckAction,
   removeDeckCardAction,
@@ -16,11 +17,12 @@ export default async function DeckEditorPage({ params }: PageProps<"/decks/[id]"
   const { id } = await params;
   if (!session?.user) redirect(`/login?callbackUrl=/decks/${id}`);
 
-  const [deck, catalog] = await Promise.all([
+  const [deck, catalog, recommendations] = await Promise.all([
     getOwnedDeck(session, id),
     prisma.card.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true, faction: true, type: true } }),
+    getDeckRecommendations(session, id),
   ]);
-  if (!deck) notFound();
+  if (!deck || !recommendations) notFound();
 
   const updateAction = updateDeckAction.bind(null, deck.id);
   const deleteAction = deleteDeckAction.bind(null, deck.id);
@@ -211,6 +213,71 @@ export default async function DeckEditorPage({ params }: PageProps<"/decks/[id]"
                 >
                   Browse the catalog
                 </Link>
+              </div>
+            )}
+          </section>
+
+          <section
+            aria-labelledby="recommendations-heading"
+            className="rounded-2xl border border-[var(--rift-border)] bg-[var(--rift-surface)] p-6"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--rift-arcane)]">
+              Arcane counsel
+            </p>
+            <h2 id="recommendations-heading" className="mt-2 font-display text-xl font-semibold">
+              Recommended cards
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--rift-text-secondary)]">
+              Suggestions adapt to this deck&apos;s factions, tags, card types, and mana curve.
+            </p>
+
+            {recommendations.length ? (
+              <ul className="mt-5 grid gap-4 sm:grid-cols-2">
+                {recommendations.map(({ card, reasons }) => (
+                  <li
+                    key={card.id}
+                    className="flex flex-col rounded-xl border border-[var(--rift-border)] bg-[var(--rift-surface-raised)] p-4"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <Link
+                          href={`/catalog/${card.slug}`}
+                          className="font-display font-semibold text-[var(--rift-text-primary)] underline-offset-4 hover:underline"
+                        >
+                          {card.name}
+                        </Link>
+                        <p className="mt-1 text-xs uppercase tracking-[0.15em] text-[var(--rift-text-tertiary)]">
+                          {card.faction} &middot; {card.type} &middot; Cost {card.cost}
+                        </p>
+                      </div>
+                      <span className="font-mono text-sm text-[var(--rift-text-primary)]" aria-label={`${card.cost} cost`}>
+                        {card.cost}
+                      </span>
+                    </div>
+                    <ul className="mt-4 space-y-2 text-sm text-[var(--rift-text-secondary)]">
+                      {reasons.map((reason) => (
+                        <li key={reason}>{reason}</li>
+                      ))}
+                    </ul>
+                    <form action={setCardAction} className="mt-auto pt-5">
+                      <input type="hidden" name="cardId" value={card.id} />
+                      <input type="hidden" name="quantity" value="1" />
+                      <button
+                        type="submit"
+                        className="min-h-10 rounded-lg bg-[var(--rift-arcane-solid)] px-4 text-sm font-semibold text-white hover:bg-[var(--rift-arcane-hover)] focus-visible:outline-none focus-visible:shadow-[var(--glow-arcane)]"
+                      >
+                        Add to deck
+                      </button>
+                    </form>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="mt-5 rounded-xl border border-dashed border-[var(--rift-border)] p-6 text-center">
+                <h3 className="font-display text-lg font-semibold">No new suggestions</h3>
+                <p className="mt-2 text-sm text-[var(--rift-text-secondary)]">
+                  Every catalog card is already represented in this deck.
+                </p>
               </div>
             )}
           </section>
