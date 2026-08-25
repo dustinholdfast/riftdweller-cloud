@@ -15,6 +15,7 @@ Prisma Client is generated automatically after dependency installation. Use
 
 ## Validation
 
+- `npm test`
 - `npm run lint`
 - `npm run build`
 - `npx tsc --noEmit`

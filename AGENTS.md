@@ -17,6 +17,8 @@ should follow here.
 - `npm run dev` - start the local Next.js development server.
 - `npm run build` - create a production build.
 - `npm run lint` - run ESLint.
+- `npm test` - run the Vitest suite once.
+- `npm run test:watch` - run Vitest in watch mode.
 - `npm run db:generate` - regenerate Prisma Client.
 - `npm run db:migrate` - create and apply a local SQLite migration.
 - `npm run db:studio` - inspect the local database with Prisma Studio.
