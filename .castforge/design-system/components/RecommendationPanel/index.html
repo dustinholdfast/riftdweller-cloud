@@ -1,0 +1,204 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>RecommendationPanel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=Geist+Mono:wght@500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rift-void: #0b0710;
+    --rift-surface: #16101d;
+    --rift-surface-raised: #1f1729;
+    --rift-border: #2f2438;
+    --rift-border-strong: #4a3a58;
+    --rift-text-primary: #f2e9dc;
+    --rift-text-secondary: #b3a6b8;
+    --rift-text-tertiary: #7c6f83;
+    --rift-arcane: #8b5cf6;
+    --rift-arcane-solid: #7c3aed;
+    --rift-arcane-hover: #6d28d9;
+    --rarity-rare-text: #7dd3fc;     --rarity-rare-bg: rgba(56,189,248,0.12);      --rarity-rare-border: rgba(56,189,248,0.35);
+    --rarity-epic-text: #c4b5fd;     --rarity-epic-bg: rgba(167,139,250,0.12);     --rarity-epic-border: rgba(167,139,250,0.35);
+    --rarity-common-text: #b6bec9;   --rarity-common-bg: rgba(156,163,175,0.12);   --rarity-common-border: rgba(156,163,175,0.35);
+    --glow-arcane: 0 0 0 1px rgba(139,92,246,0.4), 0 0 24px rgba(139,92,246,0.25);
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--rift-void);
+    color: var(--rift-text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 40px;
+  }
+  h1 { font-family: 'Cinzel', serif; font-size: 20px; letter-spacing: 0.05em; margin: 0 0 4px; }
+  .sub { color: var(--rift-text-secondary); font-size: 14px; margin: 0 0 28px; max-width: 640px; line-height: 1.5; }
+  .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--rift-text-tertiary); margin: 0 0 10px; }
+
+  .panel {
+    max-width: 640px;
+    border: 1px solid rgba(139,92,246,0.35);
+    box-shadow: var(--glow-arcane);
+    background: var(--rift-surface);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+  .eyebrow { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--rift-arcane); margin: 0; }
+  .heading { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 600; margin: 8px 0 0; }
+  .desc { font-size: 14px; color: var(--rift-text-secondary); line-height: 1.5; margin: 8px 0 0; }
+
+  .grid { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .suggestion {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--rift-border);
+    background: var(--rift-surface-raised);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    transition: border-color 0.15s ease;
+  }
+  .suggestion:hover { border-color: var(--rift-border-strong); }
+  .s-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .s-faction { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--rift-text-tertiary); margin: 0; }
+  .s-name { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 600; margin: 2px 0 0; }
+  .cost {
+    flex-shrink: 0;
+    font-family: 'Geist Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--rift-surface);
+    border: 1px solid var(--rift-border-strong);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+    padding: 3px 9px; border-radius: 6px; border: 1px solid;
+  }
+  .badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .b-rarity { color: var(--rarity-epic-text); background: var(--rarity-epic-bg); border-color: var(--rarity-epic-border); }
+  .b-type { color: var(--rift-text-secondary); background: var(--rift-surface); border-color: var(--rift-border); }
+  .b-type::before { display: none; }
+
+  .reason {
+    margin-top: 12px;
+    display: inline-flex; align-items: center; gap: 6px;
+    width: fit-content;
+    font-size: 12px; font-weight: 500;
+    padding: 4px 10px; border-radius: 6px;
+    border: 1px solid rgba(139,92,246,0.4);
+    background: rgba(139,92,246,0.12);
+    color: var(--rift-text-primary);
+  }
+  .reason svg { flex-shrink: 0; color: var(--rift-arcane); }
+
+  .cta {
+    margin-top: auto;
+    padding-top: 16px;
+  }
+  .cta button {
+    width: 100%;
+    min-height: 40px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--rift-arcane-solid);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .cta button:hover { background: var(--rift-arcane-hover); }
+
+  .empty {
+    margin-top: 20px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    border: 1px dashed var(--rift-border);
+    border-radius: var(--radius-md);
+    padding: 40px 24px;
+  }
+  .empty-icon {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(124,58,237,0.15);
+    color: var(--rift-arcane);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .empty h3 { font-family: 'Cinzel', serif; font-size: 17px; margin: 16px 0 0; }
+  .empty p { font-size: 14px; color: var(--rift-text-secondary); margin: 8px 0 0; max-width: 320px; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <h1>RecommendationPanel</h1>
+  <p class="sub">Arcane-glow panel used for the deck editor's "Recommended cards" surface. Each suggestion follows the CardTile visual language (faction eyebrow, display-font name, cost badge, rarity/type badges) plus a single reason chip explaining the suggestion. Falls back to an EmptyState when every catalog card is already owned.</p>
+
+  <div class="label">Populated</div>
+  <div class="panel">
+    <p class="eyebrow">Arcane counsel</p>
+    <h2 class="heading">Recommended cards</h2>
+    <p class="desc">Suggestions adapt to this deck's factions, tags, card types, and mana curve.</p>
+
+    <div class="grid">
+      <div class="suggestion">
+        <div class="s-head">
+          <div>
+            <p class="s-faction">Nightmarch</p>
+            <p class="s-name">Veil of Whispers</p>
+          </div>
+          <span class="cost">2</span>
+        </div>
+        <div class="badges">
+          <span class="badge b-rarity">Epic</span>
+          <span class="badge b-type">Spell</span>
+        </div>
+        <span class="reason">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 5.6L19 9l-5.2 1.4L12 16l-1.8-5.6L5 9l5.2-1.4L12 2z"/></svg>
+          Synergizes with Undead
+        </span>
+        <div class="cta"><button>Add to deck</button></div>
+      </div>
+
+      <div class="suggestion">
+        <div class="s-head">
+          <div>
+            <p class="s-faction">Ashgrave</p>
+            <p class="s-name">Hollow Acolyte</p>
+          </div>
+          <span class="cost">1</span>
+        </div>
+        <div class="badges">
+          <span class="badge b-rarity" style="color:#b6bec9;background:rgba(156,163,175,0.12);border-color:rgba(156,163,175,0.35)">Common</span>
+          <span class="badge b-type">Creature</span>
+        </div>
+        <span class="reason">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l1.8 5.6L19 9l-5.2 1.4L12 16l-1.8-5.6L5 9l5.2-1.4L12 2z"/></svg>
+          Fills your early curve
+        </span>
+        <div class="cta"><button>Add to deck</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label" style="margin-top:32px;">Empty</div>
+  <div class="panel">
+    <p class="eyebrow">Arcane counsel</p>
+    <h2 class="heading">Recommended cards</h2>
+    <p class="desc">Suggestions adapt to this deck's factions, tags, card types, and mana curve.</p>
+    <div class="empty">
+      <div class="empty-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l1.8 5.6L19 10l-5.2 1.4L12 17l-1.8-5.6L5 10l5.2-1.4L12 3z"/></svg>
+      </div>
+      <h3>No new suggestions</h3>
+      <p>Every catalog card is already represented in this deck.</p>
+    </div>
+  </div>
+</body>
+</html>

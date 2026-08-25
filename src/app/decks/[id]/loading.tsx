@@ -15,6 +15,7 @@ export default function DeckEditorLoading() {
         </div>
         <div className="space-y-8">
           <div className="h-64 animate-pulse rounded-2xl border border-[var(--rift-border)] bg-[linear-gradient(100deg,var(--rift-surface)_30%,var(--rift-surface-raised)_50%,var(--rift-surface)_70%)] bg-[length:200%_100%]" />
+          <div className="h-56 animate-pulse rounded-2xl border border-[color:var(--rift-arcane)]/35 bg-[linear-gradient(100deg,var(--rift-surface)_30%,var(--rift-surface-raised)_50%,var(--rift-surface)_70%)] bg-[length:200%_100%]" />
           <div className="h-40 animate-pulse rounded-2xl border border-[var(--rift-border)] bg-[var(--rift-surface)]" />
         </div>
       </div>

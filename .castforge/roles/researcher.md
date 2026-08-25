@@ -7,3 +7,9 @@
 **Key decisions:** (no verdict this turn)
 **Open questions:** none
 
+## researcher - turn 2026-08-25T10:34:51.007019400+00:00
+
+**Did:** (no file edits this turn)
+**Key decisions:** (no verdict this turn)
+**Open questions:** none
+

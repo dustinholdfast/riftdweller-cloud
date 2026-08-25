@@ -220,7 +220,7 @@ export default async function DeckEditorPage({ params }: PageProps<"/decks/[id]"
 
           <section
             aria-labelledby="recommendations-heading"
-            className="rounded-2xl border border-[var(--rift-border)] bg-[var(--rift-surface)] p-6"
+            className="rounded-2xl border border-[color:var(--rift-arcane)]/35 bg-[var(--rift-surface)] p-6 shadow-[var(--glow-arcane)]"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--rift-arcane)]">
               Arcane counsel
@@ -233,39 +233,59 @@ export default async function DeckEditorPage({ params }: PageProps<"/decks/[id]"
             </p>
 
             {recommendations.length ? (
-              <ul className="mt-5 grid gap-4 sm:grid-cols-2">
+              <ul className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {recommendations.map(({ card, reasons }) => (
                   <li
                     key={card.id}
-                    className="flex flex-col rounded-xl border border-[var(--rift-border)] bg-[var(--rift-surface-raised)] p-4"
+                    className="flex flex-col rounded-xl border border-[var(--rift-border)] bg-[var(--rift-surface-raised)] p-4 transition hover:border-[var(--rift-border-strong)]"
                   >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="truncate text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--rift-text-tertiary)]">
+                          {card.faction}
+                        </p>
                         <Link
                           href={`/catalog/${card.slug}`}
                           className="font-display font-semibold text-[var(--rift-text-primary)] underline-offset-4 hover:underline"
                         >
                           {card.name}
                         </Link>
-                        <p className="mt-1 text-xs uppercase tracking-[0.15em] text-[var(--rift-text-tertiary)]">
-                          {card.faction} &middot; {card.type} &middot; Cost {card.cost}
-                        </p>
                       </div>
-                      <span className="font-mono text-sm text-[var(--rift-text-primary)]" aria-label={`${card.cost} cost`}>
+                      <span
+                        className="grid size-8 shrink-0 place-items-center rounded-full border border-[var(--rift-border-strong)] bg-[var(--rift-surface)] font-mono text-sm"
+                        aria-label={`${card.cost} cost`}
+                      >
                         {card.cost}
                       </span>
                     </div>
-                    <ul className="mt-4 space-y-2 text-sm text-[var(--rift-text-secondary)]">
-                      {reasons.map((reason) => (
-                        <li key={reason}>{reason}</li>
-                      ))}
-                    </ul>
-                    <form action={setCardAction} className="mt-auto pt-5">
+
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <CardBadge rarity={card.rarity}>{card.rarity}</CardBadge>
+                      <CardBadge>{card.type}</CardBadge>
+                    </div>
+
+                    {reasons[0] ? (
+                      <span className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-md border border-[color:var(--rift-arcane)]/40 bg-[color:var(--rift-arcane)]/12 px-2.5 py-1 text-xs font-medium leading-tight text-[var(--rift-text-primary)]">
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          className="size-3 shrink-0 text-[var(--rift-arcane)]"
+                        >
+                          <path d="M12 2l1.8 5.6L19 9l-5.2 1.4L12 16l-1.8-5.6L5 9l5.2-1.4L12 2z" />
+                        </svg>
+                        {reasons[0].replace(/\.$/, "")}
+                      </span>
+                    ) : null}
+
+                    <form action={setCardAction} className="mt-auto pt-4">
                       <input type="hidden" name="cardId" value={card.id} />
                       <input type="hidden" name="quantity" value="1" />
                       <button
                         type="submit"
-                        className="min-h-10 rounded-lg bg-[var(--rift-arcane-solid)] px-4 text-sm font-semibold text-white hover:bg-[var(--rift-arcane-hover)] focus-visible:outline-none focus-visible:shadow-[var(--glow-arcane)]"
+                        className="min-h-10 w-full rounded-lg bg-[var(--rift-arcane-solid)] px-4 text-sm font-semibold text-white transition hover:bg-[var(--rift-arcane-hover)] focus-visible:outline-none focus-visible:shadow-[var(--glow-arcane)]"
                       >
                         Add to deck
                       </button>
@@ -274,9 +294,17 @@ export default async function DeckEditorPage({ params }: PageProps<"/decks/[id]"
                 ))}
               </ul>
             ) : (
-              <div className="mt-5 rounded-xl border border-dashed border-[var(--rift-border)] p-6 text-center">
-                <h3 className="font-display text-lg font-semibold">No new suggestions</h3>
-                <p className="mt-2 text-sm text-[var(--rift-text-secondary)]">
+              <div className="mt-5 flex flex-col items-center rounded-xl border border-dashed border-[var(--rift-border)] px-6 py-10 text-center">
+                <span
+                  className="grid size-12 place-items-center rounded-full bg-[color:var(--rift-arcane-solid)]/15 text-[var(--rift-arcane)]"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="size-6">
+                    <path d="M12 3l1.8 5.6L19 10l-5.2 1.4L12 17l-1.8-5.6L5 10l5.2-1.4L12 3z" />
+                  </svg>
+                </span>
+                <h3 className="mt-5 font-display text-lg font-semibold">No new suggestions</h3>
+                <p className="mt-2 max-w-sm text-sm leading-6 text-[var(--rift-text-secondary)]">
                   Every catalog card is already represented in this deck.
                 </p>
               </div>
