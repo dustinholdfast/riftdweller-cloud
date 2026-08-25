@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getOwnedDeck } from "@/lib/decks";
 import { getDeckRecommendations } from "@/lib/recommendations";
+import { CardBadge } from "@/components/catalog/card-badge";
 import {
   deleteDeckAction,
   removeDeckCardAction,
