@@ -1,8 +1,40 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --rift-void: #0b0710;
+  --rift-surface: #16101d;
+  --rift-surface-raised: #1f1729;
+  --rift-border: #2f2438;
+  --rift-border-strong: #4a3a58;
+  --rift-text-primary: #f2e9dc;
+  --rift-text-secondary: #b3a6b8;
+  --rift-text-tertiary: #7c6f83;
+  --rift-ember: #d1453d;
+  --rift-ember-solid: #b23430;
+  --rift-ember-hover: #c93f37;
+  --rift-arcane: #8b5cf6;
+  --rift-arcane-solid: #7c3aed;
+  --rift-danger: #f87171;
+  --rift-danger-bg: #2a1416;
+  --rarity-common-text: #b6bec9;
+  --rarity-common-bg: rgba(156, 163, 175, 0.12);
+  --rarity-common-border: rgba(156, 163, 175, 0.35);
+  --rarity-uncommon-text: #6ee7a0;
+  --rarity-uncommon-bg: rgba(74, 222, 128, 0.12);
+  --rarity-uncommon-border: rgba(74, 222, 128, 0.35);
+  --rarity-rare-text: #7dd3fc;
+  --rarity-rare-bg: rgba(56, 189, 248, 0.12);
+  --rarity-rare-border: rgba(56, 189, 248, 0.35);
+  --rarity-epic-text: #c4b5fd;
+  --rarity-epic-bg: rgba(167, 139, 250, 0.12);
+  --rarity-epic-border: rgba(167, 139, 250, 0.35);
+  --rarity-legendary-text: #fbbf24;
+  --rarity-legendary-bg: rgba(245, 158, 11, 0.14);
+  --rarity-legendary-border: rgba(245, 158, 11, 0.4);
+  --glow-ember: 0 0 0 1px rgba(209, 69, 61, 0.4), 0 0 24px rgba(209, 69, 61, 0.25);
+  --glow-arcane: 0 0 0 1px rgba(139, 92, 246, 0.4), 0 0 24px rgba(139, 92, 246, 0.25);
+  --background: var(--rift-void);
+  --foreground: var(--rift-text-primary);
 }
 
 @theme inline {
@@ -10,17 +42,15 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-cinzel);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  background-image:
+    radial-gradient(circle at 12% -10%, rgba(209, 69, 61, 0.09), transparent 30rem),
+    radial-gradient(circle at 88% 18%, rgba(139, 92, 246, 0.07), transparent 28rem);
+  background-attachment: fixed;
 }
