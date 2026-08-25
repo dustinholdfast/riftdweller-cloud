@@ -14,6 +14,7 @@ export async function SiteHeader() {
           <Link href="/catalog">Catalog</Link>
           {session?.user ? (
             <>
+              <Link href="/decks">My decks</Link>
               <span className="hidden text-sm text-zinc-400 sm:inline">
                 {session.user.name || session.user.email}
               </span>

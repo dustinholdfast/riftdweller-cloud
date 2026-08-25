@@ -18,33 +18,36 @@ Establish the Next.js/Prisma/SQLite scaffold, dark fantasy design system, and se
 
 Users can register, log in, and access protected areas via Auth.js credentials with session-based ownership enforcement.
 
-- Add Prisma User model and Auth.js credentials provider [up-next] (role: coder)
-- Build register and login pages [up-next] (role: coder)
+- Add Prisma User model and Auth.js credentials provider [done] (role: coder)
+- Build register and login pages [done] (role: coder)
   - depends on: 9ce763e4-d40c-4046-920c-6798290f6c11
-- Write auth/session/ownership tests [up-next] (role: coder)
+- Write auth/session/ownership tests [done] (role: coder)
   - depends on: 9ce763e4-d40c-4046-920c-6798290f6c11
-- Run auth test suite and report results [up-next] (role: coder)
+- Run auth test suite and report results [done] (role: coder)
   - depends on: 9054dafe-763c-4118-9c5e-c46dfd104eb0
-- Restyle register/login pages and navbar to design system [up-next] (role: designer)
+- Restyle register/login pages and navbar to design system [done] (role: designer)
   - depends on: 603693d0-5a60-43b5-8b62-4beae90fe457
+- Task: Build register and login pages [done] (role: coder)
+- Task: Run auth test suite and report results [done] (role: coder)
+- Task: Build catalog browse/search page [done] (role: coder)
 
 ## Card catalog browse/search
 
 Users can browse, search, and inspect the seeded card catalog.
 
-- Build catalog browse/search page [up-next] (role: coder)
-- Add card detail view [up-next] (role: coder)
+- Build catalog browse/search page [done] (role: coder)
+- Add card detail view [done] (role: coder)
   - depends on: fcc77dc0-bf4d-4fe5-a0bd-4dabe9cf8842
-- Restyle catalog browse/search and card detail views (role: designer) (after: Build catalog browse/search page) [up-next] (role: coder)
+- Restyle catalog browse/search and card detail views (role: designer) (after: Build catalog browse/search page) [done] (role: coder)
   - depends on: 5bac92e7-1df5-45b0-8982-5edc684fb62f
 
 ## Deck builder
 
 Authenticated users can create, edit, save, and delete private decks using catalog cards.
 
-- Implement deck CRUD scoped to owning user (role: coder) (key: deckbuilder) (after: Run auth/ownership invariant tests against implementation) [up-next] (role: coder)
+- Implement deck CRUD scoped to owning user (role: coder) (key: deckbuilder) (after: Run auth/ownership invariant tests against implementation) [doing] (role: coder)
   - depends on: 60863680-8580-4202-ae2c-01e002276405
-- Style deck builder UI to design direction [up-next] (role: designer)
+- Style deck builder UI to design direction [blocked] (role: designer)
 - Run deck ownership/persistence tests [up-next] (role: coder)
 
 ## Deck recommendations
@@ -61,14 +64,6 @@ Users get deterministic, rule-based card suggestions for their current deck.
 
 ## Deck builder
 
-Authenticated users can create, edit, and manage private decks with enforced ownership.
+Bring the now-implemented deck builder views up to the dark-fantasy design system contract in ui-spec.md §3.
 
-- Add Deck/DeckCard models and CRUD API [up-next] (role: coder)
-  - depends on: 9ce763e4-d40c-4046-920c-6798290f6c11
-- Build deck builder UI (role: coder) (after: Add Deck/DeckCard models and CRUD API) [up-next] (role: coder)
-  - depends on: fcc77dc0-bf4d-4fe5-a0bd-4dabe9cf8842
-- Write deck ownership tests [up-next] (role: coder)
-  - depends on: 60625869-cd52-4fbe-a98a-ba54ed8a8025
-- Run deck ownership tests and report results [up-next] (role: coder)
-  - depends on: 5cc0c718-1298-410d-a099-36f9da156d75
-- Restyle deck list and deck builder views [up-next] (role: designer)
+- Restyle deck builder views to match design system [up-next] (role: designer)

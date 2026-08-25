@@ -14,6 +14,7 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  decks        Deck[]
 }
 
 model Card {
@@ -31,6 +32,7 @@ model Card {
   setCode         String
   collectorNumber Int
   tags            CardTag[]
+  deckCards       DeckCard[]
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
@@ -40,6 +42,30 @@ model Card {
   @@index([type])
   @@index([rarity])
   @@index([cost])
+}
+
+model Deck {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  owner       User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  cards       DeckCard[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([ownerId, updatedAt])
+}
+
+model DeckCard {
+  deckId   String
+  cardId   String
+  quantity Int    @default(1)
+  deck     Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  card     Card   @relation(fields: [cardId], references: [id], onDelete: Restrict)
+
+  @@id([deckId, cardId])
+  @@index([cardId])
 }
 
 model CardTag {
