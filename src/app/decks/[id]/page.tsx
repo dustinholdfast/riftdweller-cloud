@@ -124,16 +124,24 @@ export default async function DeckEditorPage({ params }: PageProps<"/decks/[id]"
 
                   return (
                     <li key={card.id} className="flex flex-wrap items-center justify-between gap-4 p-4">
-                      <div className="min-w-0">
-                        <Link
-                          href={`/catalog/${card.slug}`}
-                          className="font-display text-base font-semibold text-[var(--rift-text-primary)] underline-offset-4 hover:underline"
+                      <div className="flex min-w-0 items-center gap-3">
+                        <span
+                          className="grid size-9 shrink-0 place-items-center rounded-full border border-[var(--rift-border-strong)] bg-[var(--rift-surface-raised)] font-mono text-sm"
+                          aria-label={`${card.cost} cost`}
                         >
-                          {card.name}
-                        </Link>
-                        <p className="mt-1 text-xs uppercase tracking-[0.15em] text-[var(--rift-text-tertiary)]">
-                          {card.faction} &middot; {card.type} &middot; cost {card.cost}
-                        </p>
+                          {card.cost}
+                        </span>
+                        <div className="min-w-0">
+                          <Link
+                            href={`/catalog/${card.slug}`}
+                            className="font-display text-base font-semibold text-[var(--rift-text-primary)] underline-offset-4 hover:underline"
+                          >
+                            {card.name}
+                          </Link>
+                          <p className="mt-1 text-xs uppercase tracking-[0.15em] text-[var(--rift-text-tertiary)]">
+                            {card.faction} &middot; {card.type}
+                          </p>
+                        </div>
                       </div>
 
                       <div className="flex items-center gap-3">
@@ -209,9 +217,9 @@ export default async function DeckEditorPage({ params }: PageProps<"/decks/[id]"
 
           <section
             aria-labelledby="add-card-heading"
-            className="rounded-2xl border border-[color:var(--rift-arcane)]/35 bg-[var(--rift-surface)] p-6 shadow-[var(--glow-arcane)]"
+            className="rounded-2xl border border-[var(--rift-border)] bg-[var(--rift-surface)] p-6"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--rift-arcane)]">Catalog picker</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--rift-ember)]">Catalog picker</p>
             <h2 id="add-card-heading" className="mt-2 font-display text-xl font-semibold">Add or update a card</h2>
             <form action={setCardAction} className="mt-4 grid gap-4 sm:grid-cols-[1fr_7rem_auto] sm:items-end">
               <label className="grid gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-[var(--rift-text-tertiary)]">
@@ -242,7 +250,7 @@ export default async function DeckEditorPage({ params }: PageProps<"/decks/[id]"
               </label>
               <button
                 type="submit"
-                className="min-h-11 rounded-lg border border-transparent bg-[var(--rift-arcane-solid)] px-5 text-sm font-semibold text-white transition hover:bg-[var(--rift-arcane-hover)] focus-visible:outline-none focus-visible:shadow-[var(--glow-arcane)]"
+                className="min-h-11 rounded-lg border border-transparent bg-[var(--rift-ember-solid)] px-5 text-sm font-semibold text-white transition hover:bg-[var(--rift-ember-hover)] focus-visible:outline-none focus-visible:shadow-[var(--glow-ember)]"
               >
                 Add to deck
               </button>
