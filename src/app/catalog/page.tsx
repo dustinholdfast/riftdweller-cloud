@@ -101,7 +101,14 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
                   <p className="text-xs uppercase tracking-wider text-zinc-500">
                     {card.faction}
                   </p>
-                  <h2 className="mt-1 text-xl font-semibold">{card.name}</h2>
+                  <h2 className="mt-1 text-xl font-semibold">
+                    <Link
+                      href={`/catalog/${card.slug}`}
+                      className="rounded-sm underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                    >
+                      {card.name}
+                    </Link>
+                  </h2>
                 </div>
                 <span
                   className="grid size-10 shrink-0 place-items-center rounded-full border border-zinc-700 font-mono text-lg"
@@ -148,6 +155,13 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
                     </span>
                   ) : null}
                 </div>
+                <Link
+                  href={`/catalog/${card.slug}`}
+                  className="mt-4 inline-flex min-h-10 items-center text-sm font-medium underline underline-offset-4"
+                  aria-label={`View details for ${card.name}`}
+                >
+                  View details
+                </Link>
               </div>
             </article>
           ))}
