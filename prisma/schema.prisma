@@ -6,3 +6,38 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+model Card {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  name            String
+  rulesText       String
+  flavorText      String?
+  faction         String
+  type            String
+  rarity          String
+  cost            Int
+  attack          Int?
+  health          Int?
+  setCode         String
+  collectorNumber Int
+  tags            CardTag[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([setCode, collectorNumber])
+  @@index([name])
+  @@index([faction])
+  @@index([type])
+  @@index([rarity])
+  @@index([cost])
+}
+
+model CardTag {
+  cardId String
+  tag    String
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, tag])
+  @@index([tag])
+}

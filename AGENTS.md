@@ -19,6 +19,7 @@ should follow here.
 - `npm run lint` - run ESLint.
 - `npm run db:generate` - regenerate Prisma Client.
 - `npm run db:migrate` - create and apply a local SQLite migration.
+- `npm run db:seed` - idempotently seed the placeholder card catalog.
 - `npm run db:studio` - inspect the local database with Prisma Studio.
 
 ## Notes
