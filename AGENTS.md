@@ -14,8 +14,16 @@ should follow here.
 
 ## Commands
 
-List the build, test, and run commands for this project here.
+- `npm run dev` - start the local Next.js development server.
+- `npm run build` - create a production build.
+- `npm run lint` - run ESLint.
+- `npm run db:generate` - regenerate Prisma Client.
+- `npm run db:migrate` - create and apply a local SQLite migration.
+- `npm run db:studio` - inspect the local database with Prisma Studio.
 
 ## Notes
 
-Anything else an agent should know before making changes.
+- The app uses the App Router under `src/app` and the `@/*` import alias.
+- Prisma Client is generated into `src/generated/prisma` and should not be
+  edited by hand.
+- Local SQLite files under `prisma/` are intentionally ignored.
