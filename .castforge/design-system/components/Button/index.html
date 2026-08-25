@@ -1,0 +1,115 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Button</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rift-void: #0b0710;
+    --rift-surface: #16101d;
+    --rift-border: #2f2438;
+    --rift-border-strong: #4a3a58;
+    --rift-text-primary: #f2e9dc;
+    --rift-text-secondary: #b3a6b8;
+    --rift-text-tertiary: #7c6f83;
+    --rift-ember-solid: #b23430;
+    --rift-ember-hover: #c93f37;
+    --rift-arcane-solid: #7c3aed;
+    --rift-arcane-hover: #6d28d9;
+    --rift-danger: #f87171;
+    --rift-danger-bg: #2a1416;
+    --glow-ember: 0 0 0 1px rgba(209,69,61,0.4), 0 0 24px rgba(209,69,61,0.25);
+    --glow-arcane: 0 0 0 1px rgba(139,92,246,0.4), 0 0 24px rgba(139,92,246,0.25);
+    --radius-md: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--rift-void);
+    color: var(--rift-text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 40px;
+  }
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin: 0 0 4px;
+  }
+  .sub { color: var(--rift-text-secondary); font-size: 14px; margin: 0 0 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-bottom: 32px; }
+  .label { width: 100%; font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--rift-text-tertiary); margin-bottom: 4px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    min-height: 40px;
+  }
+  .btn:focus-visible { outline: none; }
+
+  .btn-primary { background: var(--rift-ember-solid); color: #ffffff; }
+  .btn-primary:hover { background: var(--rift-ember-hover); }
+  .btn-primary:focus-visible { box-shadow: var(--glow-ember); }
+  .btn-primary:disabled { background: var(--rift-ember-solid); opacity: 0.4; cursor: not-allowed; }
+
+  .btn-secondary { background: var(--rift-arcane-solid); color: #ffffff; }
+  .btn-secondary:hover { background: var(--rift-arcane-hover); }
+  .btn-secondary:focus-visible { box-shadow: var(--glow-arcane); }
+  .btn-secondary:disabled { background: var(--rift-arcane-solid); opacity: 0.4; cursor: not-allowed; }
+
+  .btn-ghost { background: transparent; color: var(--rift-text-primary); border-color: var(--rift-border); }
+  .btn-ghost:hover { border-color: var(--rift-border-strong); background: var(--rift-surface); }
+  .btn-ghost:focus-visible { box-shadow: var(--glow-arcane); }
+  .btn-ghost:disabled { color: var(--rift-text-tertiary); opacity: 0.6; cursor: not-allowed; }
+
+  .btn-danger { background: var(--rift-danger-bg); color: var(--rift-danger); border-color: rgba(248,113,113,0.4); }
+  .btn-danger:hover { background: rgba(248,113,113,0.16); }
+  .btn-danger:focus-visible { box-shadow: 0 0 0 1px rgba(248,113,113,0.5), 0 0 24px rgba(248,113,113,0.2); }
+
+  .spinner {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-top-color: #ffffff;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+  <h1>Button</h1>
+  <p class="sub">Primary (ember) for the main action per view, secondary (arcane) for magic/recommendation actions, ghost for tertiary actions, danger for destructive actions (delete deck, remove card).</p>
+
+  <div class="row">
+    <span class="label">Default</span>
+    <button class="btn btn-primary">Save deck</button>
+    <button class="btn btn-secondary">Get recommendations</button>
+    <button class="btn btn-ghost">Cancel</button>
+    <button class="btn btn-danger">Delete deck</button>
+  </div>
+
+  <div class="row">
+    <span class="label">Loading</span>
+    <button class="btn btn-primary" disabled><span class="spinner"></span>Saving&hellip;</button>
+  </div>
+
+  <div class="row">
+    <span class="label">Disabled</span>
+    <button class="btn btn-primary" disabled>Save deck</button>
+    <button class="btn btn-secondary" disabled>Get recommendations</button>
+    <button class="btn btn-ghost" disabled>Cancel</button>
+  </div>
+</body>
+</html>

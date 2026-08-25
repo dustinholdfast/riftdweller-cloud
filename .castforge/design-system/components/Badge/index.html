@@ -1,0 +1,96 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Badge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rift-void: #0b0710;
+    --rift-surface: #16101d;
+    --rift-text-primary: #f2e9dc;
+    --rift-text-secondary: #b3a6b8;
+    --rift-text-tertiary: #7c6f83;
+    --rarity-common-text: #b6bec9;   --rarity-common-bg: rgba(156,163,175,0.12);   --rarity-common-border: rgba(156,163,175,0.35);
+    --rarity-uncommon-text: #6ee7a0; --rarity-uncommon-bg: rgba(74,222,128,0.12);  --rarity-uncommon-border: rgba(74,222,128,0.35);
+    --rarity-rare-text: #7dd3fc;     --rarity-rare-bg: rgba(56,189,248,0.12);      --rarity-rare-border: rgba(56,189,248,0.35);
+    --rarity-epic-text: #c4b5fd;     --rarity-epic-bg: rgba(167,139,250,0.12);     --rarity-epic-border: rgba(167,139,250,0.35);
+    --rarity-legendary-text: #fbbf24; --rarity-legendary-bg: rgba(245,158,11,0.14); --rarity-legendary-border: rgba(245,158,11,0.4);
+    --radius-sm: 6px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--rift-void);
+    color: var(--rift-text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 40px;
+  }
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin: 0 0 4px;
+  }
+  .sub { color: var(--rift-text-secondary); font-size: 14px; margin: 0 0 28px; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 28px; }
+  .label { width: 100%; font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--rift-text-tertiary); margin-bottom: 4px; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid;
+    line-height: 1.4;
+  }
+  .badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .badge-common { color: var(--rarity-common-text); background: var(--rarity-common-bg); border-color: var(--rarity-common-border); }
+  .badge-uncommon { color: var(--rarity-uncommon-text); background: var(--rarity-uncommon-bg); border-color: var(--rarity-uncommon-border); }
+  .badge-rare { color: var(--rarity-rare-text); background: var(--rarity-rare-bg); border-color: var(--rarity-rare-border); }
+  .badge-epic { color: var(--rarity-epic-text); background: var(--rarity-epic-bg); border-color: var(--rarity-epic-border); }
+  .badge-legendary { color: var(--rarity-legendary-text); background: var(--rarity-legendary-bg); border-color: var(--rarity-legendary-border); }
+
+  .badge-neutral {
+    color: var(--rift-text-secondary);
+    background: var(--rift-surface);
+    border-color: rgba(255,255,255,0.08);
+  }
+  .badge-neutral::before { display: none; }
+</style>
+</head>
+<body>
+  <h1>Badge</h1>
+  <p class="sub">Rarity chips (dot + text, color is never the only signal) and neutral chips for card type / filters.</p>
+
+  <div class="row">
+    <span class="label">Rarity</span>
+    <span class="badge badge-common">Common</span>
+    <span class="badge badge-uncommon">Uncommon</span>
+    <span class="badge badge-rare">Rare</span>
+    <span class="badge badge-epic">Epic</span>
+    <span class="badge badge-legendary">Legendary</span>
+  </div>
+
+  <div class="row">
+    <span class="label">Card type (neutral)</span>
+    <span class="badge badge-neutral">Creature</span>
+    <span class="badge badge-neutral">Spell</span>
+    <span class="badge badge-neutral">Relic</span>
+    <span class="badge badge-neutral">Rite</span>
+  </div>
+</body>
+</html>
