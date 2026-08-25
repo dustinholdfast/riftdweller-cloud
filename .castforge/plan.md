@@ -52,22 +52,24 @@ Authenticated users can create, edit, save, and delete private decks using catal
 - Research: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [done] (role: researcher)
 - Implement: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [done] (role: coder)
   - depends on: req-5d9bf5f4-4b3c-4d1a-9cba-fdce01e1a72d
-- Test: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [up-next] (role: tester)
+- Test: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [done] (role: tester)
   - depends on: req-90e98f88-e67a-4e39-9566-a8faddde3528
-- Review: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [up-next] (role: reviewer)
+- Review: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [done] (role: reviewer)
   - depends on: req-e3550648-08b1-4d3d-a34c-557949836ef5
 
 ## Deck recommendations
 
-Users get deterministic, rule-based card suggestions for their current deck.
+Ship the rule-based recommendation engine, surface it in the deck detail view, and style it to spec.
 
-- Implement rule-based recommendation engine [up-next] (role: coder)
-- Surface recommendations in the deck builder (role: coder) (after: Implement rule-based recommendation engine) [up-next] (role: coder)
+- Implement rule-based recommendation engine [doing] (role: coder)
 - Write recommendation determinism tests [up-next] (role: coder)
   - depends on: df589083-de38-4555-bb16-8acd1eb7c967
 - Run recommendation engine tests and report results [up-next] (role: coder)
   - depends on: 53bc9f1a-fbbb-4188-83f1-e11e26cc66b1
 - Restyle recommendations panel [up-next] (role: designer)
+- Finish and commit the rule-based recommendation engine [up-next] (role: coder)
+- Surface recommendations in the deck builder [up-next] (role: coder)
+  - depends on: afa598d2-3f6c-4333-aaa0-66ef1cb8f371
 
 ## Deck builder
 
