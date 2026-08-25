@@ -28,10 +28,14 @@ should follow here.
 - The app uses the App Router under `src/app` and the `@/*` import alias.
 - Prisma Client is generated into `src/generated/prisma` and should not be
   edited by hand.
-- The database is Supabase Postgres. The Next.js runtime queries through the
-  Supavisor transaction pooler (`DATABASE_URL`, port 6543); Prisma CLI
-  migrations and the seed script use the session/direct connection
-  (`DIRECT_URL`, port 5432).
+- The database is Postgres (Supabase in Preview/Production). The Next.js
+  runtime queries through the Supavisor transaction pooler (`DATABASE_URL`,
+  port 6543); Prisma CLI migrations and the seed script use the
+  session/direct connection (`DIRECT_URL`, port 5432).
+- There is no in-memory/SQLite fallback: `DATABASE_URL`/`DIRECT_URL` must
+  point at a live Postgres or every DB-backed route throws. For local
+  development without a Supabase account, run `docker compose up -d` (see
+  README) and point both URLs at `postgresql://prisma:prisma@localhost:5435/riftdweller`.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

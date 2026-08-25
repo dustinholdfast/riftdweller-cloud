@@ -76,11 +76,21 @@ ALTER TABLE "CardTag" ADD CONSTRAINT "CardTag_cardId_fkey"
 
 -- Defense in depth for Supabase's public schema. The documented dedicated
 -- Prisma role uses BYPASSRLS; anon/authenticated receive no table access.
+-- anon/authenticated are Supabase-managed roles that don't exist on a plain
+-- Postgres instance (e.g. local Docker dev), so the revoke is guarded to
+-- keep this migration portable outside Supabase.
 ALTER TABLE "User" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Card" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "Deck" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "DeckCard" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "CardTag" ENABLE ROW LEVEL SECURITY;
 
-REVOKE ALL ON TABLE "User", "Card", "Deck", "DeckCard", "CardTag"
-    FROM anon, authenticated;
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'anon') THEN
+        EXECUTE 'REVOKE ALL ON TABLE "User", "Card", "Deck", "DeckCard", "CardTag" FROM anon';
+    END IF;
+    IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated') THEN
+        EXECUTE 'REVOKE ALL ON TABLE "User", "Card", "Deck", "DeckCard", "CardTag" FROM authenticated';
+    END IF;
+END $$;

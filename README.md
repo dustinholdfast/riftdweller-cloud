@@ -5,6 +5,26 @@ Tailwind CSS, Prisma, and Supabase Postgres.
 
 ## Local development
 
+The app requires a real Postgres connection — there is no in-memory or
+file-based fallback, so `DATABASE_URL`/`DIRECT_URL` must point at a live
+database before running `npm run dev`. Pick one of the two paths below.
+
+### Option A: local Postgres via Docker (no cloud account needed)
+
+1. Start a local database with `docker compose up -d`. It publishes on host
+   port 5435 (not the default 5432) to avoid clashing with any Postgres
+   already running on your machine.
+2. Copy `.env.example` to `.env` and replace `DATABASE_URL`/`DIRECT_URL` with
+   the local values shown in the comment at the top of that file
+   (`postgresql://prisma:prisma@localhost:5435/riftdweller`). Generate
+   `AUTH_SECRET` with `npx auth secret`.
+3. Install dependencies with `npm install`.
+4. Apply the schema with `npm run db:migrate`.
+5. Load the placeholder card catalog with `npm run db:seed`.
+6. Start the app with `npm run dev`.
+
+### Option B: Supabase project
+
 1. Create a Supabase project and follow Supabase's Prisma guide to create a
    dedicated `prisma` database role with `BYPASSRLS` and access to `public`.
 2. Copy `.env.example` to `.env`. Set `DATABASE_URL` to the Supavisor

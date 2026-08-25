@@ -133,7 +133,9 @@ function createMigratedTestDatabase() {
   );
   database.public.none(relationalSchema);
   expect(securityStatements).toContain("ENABLE ROW LEVEL SECURITY");
-  expect(securityStatements).toContain("FROM anon, authenticated");
+  expect(securityStatements).toContain("REVOKE ALL ON TABLE");
+  expect(securityStatements).toContain("FROM anon");
+  expect(securityStatements).toContain("FROM authenticated");
   database.public.none(`
     INSERT INTO "User" ("id", "email", "passwordHash", "updatedAt")
     VALUES ('migration-check', 'migration@example.com', 'test', NOW());

@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+      POSTGRES_DB: riftdweller
+    ports:
+      - "5435:5432"
+    volumes:
+      - riftdweller-db:/var/lib/postgresql/data
+
+volumes:
+  riftdweller-db:
