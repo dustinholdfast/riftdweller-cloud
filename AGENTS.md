@@ -18,7 +18,8 @@ should follow here.
 - `npm run build` - create a production build.
 - `npm run lint` - run ESLint.
 - `npm run db:generate` - regenerate Prisma Client.
-- `npm run db:migrate` - create and apply a local SQLite migration.
+- `npm run db:migrate` - create and apply a Prisma migration against `DIRECT_URL`.
+- `npm run db:deploy` - apply committed migrations without generating a new one (used in deployment).
 - `npm run db:seed` - idempotently seed the placeholder card catalog.
 - `npm run db:studio` - inspect the local database with Prisma Studio.
 
@@ -27,7 +28,10 @@ should follow here.
 - The app uses the App Router under `src/app` and the `@/*` import alias.
 - Prisma Client is generated into `src/generated/prisma` and should not be
   edited by hand.
-- Local SQLite files under `prisma/` are intentionally ignored.
+- The database is Supabase Postgres. The Next.js runtime queries through the
+  Supavisor transaction pooler (`DATABASE_URL`, port 6543); Prisma CLI
+  migrations and the seed script use the session/direct connection
+  (`DIRECT_URL`, port 5432).
 
 <!-- BEGIN:nextjs-agent-rules -->
 

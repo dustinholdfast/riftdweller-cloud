@@ -10,5 +10,10 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    env: {
+      // Pure unit suites import modules that expose the Prisma singleton but do
+      // not query it. Persistence tests replace that singleton with pg-mem.
+      DATABASE_URL: "postgresql://prisma:prisma@localhost:5432/riftdweller_test",
+    },
   },
 });

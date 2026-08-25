@@ -9,6 +9,11 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: process.env.DATABASE_URL ?? "file:./prisma/dev.db",
+    // Prisma CLI operations must bypass Supavisor transaction pooling.
+    // The runtime client uses the pooled DATABASE_URL instead.
+    url:
+      process.env.DIRECT_URL ??
+      process.env.DATABASE_URL ??
+      "postgresql://prisma:prisma@localhost:5432/riftdweller",
   },
 });

@@ -3,6 +3,10 @@ import { Cinzel, Geist, Geist_Mono } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
 import "./globals.css";
 
+// Prisma's node-postgres driver requires the Node.js runtime. This also makes
+// the Vercel execution target explicit for every route below the root layout.
+export const runtime = "nodejs";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

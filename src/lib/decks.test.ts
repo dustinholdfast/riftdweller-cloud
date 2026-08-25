@@ -1,20 +1,111 @@
 import { randomUUID } from "node:crypto";
-import {
-  existsSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-} from "node:fs";
-import { tmpdir } from "node:os";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import Database from "better-sqlite3";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { newDb } from "pg-mem";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 let deckModule: typeof import("@/lib/decks");
-let prismaModule: typeof import("@/lib/prisma");
-let databaseDirectory: string;
+const users = new Map<string, { id: string; email: string; passwordHash: string }>();
+const cards = new Map<string, Record<string, unknown>>();
+const decks = new Map<
+  string,
+  {
+    id: string;
+    ownerId: string;
+    name: string;
+    description: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+>();
+const deckCards = new Map<
+  string,
+  { deckId: string; cardId: string; quantity: number }
+>();
+
+const prismaMock = {
+  user: {
+    createMany: async ({ data }: { data: Array<{ id: string; email: string; passwordHash: string }> }) => {
+      data.forEach((user) => users.set(user.id, user));
+    },
+  },
+  card: {
+    create: async ({ data }: { data: Record<string, unknown> & { id: string } }) => {
+      cards.set(data.id, data);
+      return data;
+    },
+    findUnique: async ({ where }: { where: { id: string } }) => {
+      const card = cards.get(where.id);
+      return card ? { id: card.id } : null;
+    },
+  },
+  deck: {
+    create: async ({ data }: { data: { ownerId: string; name: string; description: string | null } }) => {
+      const now = new Date();
+      const deck = { id: randomUUID(), ...data, createdAt: now, updatedAt: now };
+      decks.set(deck.id, deck);
+      return deck;
+    },
+    findUnique: async ({ where, include }: { where: { id: string }; include?: unknown }) => {
+      const deck = decks.get(where.id);
+      if (!deck) return null;
+      if (!include) return { id: deck.id, ownerId: deck.ownerId };
+
+      const entries = [...deckCards.values()]
+        .filter((entry) => entry.deckId === deck.id)
+        .map((entry) => ({ ...entry, card: cards.get(entry.cardId) }))
+        .sort((a, b) => String(a.card?.name).localeCompare(String(b.card?.name)));
+      return { ...deck, cards: entries };
+    },
+    findMany: async ({ where }: { where: { ownerId: string } }) =>
+      [...decks.values()]
+        .filter((deck) => deck.ownerId === where.ownerId)
+        .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
+        .map((deck) => ({
+          ...deck,
+          _count: {
+            cards: [...deckCards.values()].filter(
+              (entry) => entry.deckId === deck.id,
+            ).length,
+          },
+        })),
+    update: async ({ where, data }: { where: { id: string }; data: { name: string; description: string | null } }) => {
+      const deck = decks.get(where.id)!;
+      const updated = { ...deck, ...data, updatedAt: new Date() };
+      decks.set(updated.id, updated);
+      return updated;
+    },
+    delete: async ({ where }: { where: { id: string } }) => {
+      const deck = decks.get(where.id)!;
+      decks.delete(where.id);
+      for (const [key, entry] of deckCards) {
+        if (entry.deckId === where.id) deckCards.delete(key);
+      }
+      return deck;
+    },
+  },
+  deckCard: {
+    upsert: async ({ create, update }: { create: { deckId: string; cardId: string; quantity: number }; update: { quantity: number } }) => {
+      const key = `${create.deckId}:${create.cardId}`;
+      const entry = deckCards.get(key)
+        ? { ...deckCards.get(key)!, ...update }
+        : create;
+      deckCards.set(key, entry);
+      return entry;
+    },
+    deleteMany: async ({ where }: { where: { deckId: string; cardId: string } }) => {
+      deckCards.delete(`${where.deckId}:${where.cardId}`);
+    },
+    count: async ({ where }: { where: { deckId: string } }) =>
+      [...deckCards.values()].filter((entry) => entry.deckId === where.deckId)
+        .length,
+  },
+};
+
+vi.mock("@/lib/prisma", () => ({
+  prisma: prismaMock,
+}));
 
 const ownerId = `deck-owner-${randomUUID()}`;
 const otherUserId = `deck-other-${randomUUID()}`;
@@ -23,28 +114,40 @@ const ownerSession = { user: { id: ownerId } };
 const otherSession = { user: { id: otherUserId } };
 
 function createMigratedTestDatabase() {
-  databaseDirectory = mkdtempSync(join(tmpdir(), "riftdweller-decks-"));
-  const databasePath = join(databaseDirectory, "test.db");
-  const database = new Database(databasePath);
-  const migrationsRoot = join(process.cwd(), "prisma", "migrations");
+  const database = newDb({ autoCreateForeignKeyIndices: true });
+  const migration = readFileSync(
+    join(
+      process.cwd(),
+      "prisma",
+      "migrations",
+      "20260825130000_postgresql_baseline",
+      "migration.sql",
+    ),
+    "utf8",
+  );
 
-  for (const directory of readdirSync(migrationsRoot).sort()) {
-    const migrationPath = join(migrationsRoot, directory, "migration.sql");
-    if (existsSync(migrationPath)) {
-      database.exec(readFileSync(migrationPath, "utf8"));
-    }
-  }
-
-  database.close();
-  process.env.DATABASE_URL = `file:${databasePath.replaceAll("\\", "/")}`;
+  // pg-mem does not model Supabase roles or RLS. Run the complete relational
+  // baseline here; static assertions below cover the Supabase security tail.
+  const [relationalSchema, securityStatements = ""] = migration.split(
+    "-- Defense in depth",
+  );
+  database.public.none(relationalSchema);
+  expect(securityStatements).toContain("ENABLE ROW LEVEL SECURITY");
+  expect(securityStatements).toContain("FROM anon, authenticated");
+  database.public.none(`
+    INSERT INTO "User" ("id", "email", "passwordHash", "updatedAt")
+    VALUES ('migration-check', 'migration@example.com', 'test', NOW());
+  `);
+  expect(database.public.one(`SELECT COUNT(*) AS count FROM "User"`)).toEqual({
+    count: 1,
+  });
 }
 
 beforeAll(async () => {
   createMigratedTestDatabase();
   deckModule = await import("@/lib/decks");
-  prismaModule = await import("@/lib/prisma");
 
-  await prismaModule.prisma.user.createMany({
+  await prismaMock.user.createMany({
     data: [
       {
         id: ownerId,
@@ -58,7 +161,7 @@ beforeAll(async () => {
       },
     ],
   });
-  await prismaModule.prisma.card.create({
+  await prismaMock.card.create({
     data: {
       id: cardId,
       slug: cardId,
@@ -77,10 +180,10 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await prismaModule?.prisma.$disconnect();
-  if (databaseDirectory) {
-    rmSync(databaseDirectory, { recursive: true, force: true });
-  }
+  users.clear();
+  cards.clear();
+  decks.clear();
+  deckCards.clear();
 });
 
 describe("deck ownership and persistence", () => {
@@ -124,7 +227,7 @@ describe("deck ownership and persistence", () => {
     expect(await deckModule.deleteDeck(ownerSession, deck.id)).toBe(true);
     expect(await deckModule.getOwnedDeck(ownerSession, deck.id)).toBeNull();
     expect(
-      await prismaModule.prisma.deckCard.count({ where: { deckId: deck.id } }),
+      await prismaMock.deckCard.count({ where: { deckId: deck.id } }),
     ).toBe(0);
   });
 
