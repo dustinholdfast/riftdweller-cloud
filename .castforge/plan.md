@@ -45,10 +45,17 @@ Users can browse, search, and inspect the seeded card catalog.
 
 Authenticated users can create, edit, save, and delete private decks using catalog cards.
 
-- Implement deck CRUD scoped to owning user (role: coder) (key: deckbuilder) (after: Run auth/ownership invariant tests against implementation) [doing] (role: coder)
+- Implement deck CRUD scoped to owning user (role: coder) (key: deckbuilder) (after: Run auth/ownership invariant tests against implementation) [done] (role: coder)
   - depends on: 60863680-8580-4202-ae2c-01e002276405
-- Style deck builder UI to design direction [blocked] (role: designer)
-- Run deck ownership/persistence tests [up-next] (role: coder)
+- Style deck builder UI to design direction [done] (role: designer)
+- Run deck ownership/persistence tests [done] (role: coder)
+- Research: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [doing] (role: researcher)
+- Implement: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [up-next] (role: coder)
+  - depends on: req-5d9bf5f4-4b3c-4d1a-9cba-fdce01e1a72d
+- Test: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [up-next] (role: tester)
+  - depends on: req-90e98f88-e67a-4e39-9566-a8faddde3528
+- Review: All primitives (Button, CardTile, Badge, Input, EmptyState, Navbar) already exist as reference cards, and the deck CRUD views (src/app/decks/page.tsx, src/app/decks/[id]/page.tsx, actions.ts) now exis [up-next] (role: reviewer)
+  - depends on: req-e3550648-08b1-4d3d-a34c-557949836ef5
 
 ## Deck recommendations
 
@@ -64,6 +71,15 @@ Users get deterministic, rule-based card suggestions for their current deck.
 
 ## Deck builder
 
-Bring the now-implemented deck builder views up to the dark-fantasy design system contract in ui-spec.md §3.
+Close out deck CRUD + restyle by confirming the uncommitted presentational changes don't regress ownership/persistence behavior.
 
-- Restyle deck builder views to match design system [up-next] (role: designer)
+- Implement deck CRUD scoped to owning user [up-next] (role: coder)
+- Restyle deck builder views to the dark-fantasy design system [up-next] (role: designer)
+  - depends on: c1dcb5d0-e741-4dd6-a1bf-a56f7ccb887e
+- Run deck ownership/persistence test suite and report results [up-next] (role: coder)
+  - depends on: 9f28c1c7-5c60-4fb4-8c7c-6275b5228b23
+- CRUD task correctly carries no after-tag (first task in phase) [up-next] (role: coder)
+- Restyle task tagged [up-next] (role: coder)
+  - depends on: c1dcb5d0-e741-4dd6-a1bf-a56f7ccb887e
+- Tester task tagged (after: Restyle deck builder views to the dark-fantasy design system), consuming a real runnable artifact (decks.test.ts) produced by earlier coder work [up-next] (role: coder)
+- Reused the existing deck-builder key rather than minting a new one, consolidating the duplicate phase in place [up-next] (role: coder)
